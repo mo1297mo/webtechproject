@@ -1,10 +1,10 @@
-package webproject.webproject;
+package webtech.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class WebprojectApplicationTests {
+class BackendApplicationTests {
 
 	@Test
 	void contextLoads() {
