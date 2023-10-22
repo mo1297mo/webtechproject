@@ -15,6 +15,7 @@ public class Reservation {
     private String name;
     private Date date;
     private String time;
+    private int tableNumber;
 
     // Getters and setters
 
