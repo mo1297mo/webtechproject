@@ -1,7 +1,6 @@
 package webtech.backend.model;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +19,7 @@ public class Reservation {
     private LocalDate date;
     private String time;
     private int numberOfPeople;
-    // Table need to be added
+    private int tableNumber = 0;
 
     // Constructors
 
@@ -60,5 +59,13 @@ public class Reservation {
 
     public void setNumberOfPeople(int numberOfPeople) {
         this.numberOfPeople = numberOfPeople;
+    }
+
+    public int getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
     }
 }

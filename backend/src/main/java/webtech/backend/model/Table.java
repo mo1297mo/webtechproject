@@ -1,15 +1,7 @@
 package webtech.backend.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-//Entity
+// Das wird nicht in der Datenbank gespeichert, sondern ist nur ein Java-Objekt
 public class Table {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private int tableNumber;
     private int numberOfSeats;
     private boolean isAvailable;

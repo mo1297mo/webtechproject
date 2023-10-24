@@ -18,7 +18,7 @@
                 <label for="numberOfPeople">Number of People:</label>
                 <input type="number" id="numberOfPeople" v-model="newReservation.numberOfPeople" required />
             </div>
-            <button type="submit">Create Reservation</button>
+            <button type="submit">Tisch reservieren</button>
         </form>
     </div>
 </template>
@@ -39,15 +39,26 @@ export default {
     },
     methods: {
         createReservation() {
+            event.preventDefault();
             ReservationService.createReservation(this.newReservation)
                 .then(response => {
                     console.log('Reservation created:', response.data);
-                    this.$router.push('/'); // Redirect to the reservation page (need to be done!)
+
+                    this.$router.push({
+                        name: 'confirmation',
+                        params: {
+                            name: this.newReservation.name,
+                            date: this.newReservation.date,
+                            time: this.newReservation.time
+                        }
+                    });
+
                 })
                 .catch(error => {
                     console.error('Error creating reservation: ' + error);
                 });
         },
     },
+
 };
 </script>  
