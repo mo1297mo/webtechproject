@@ -15,6 +15,7 @@ public class Reservation {
     private String name;
     private Date date;
     private String time;
+    private int numberOfPeople;
     private int tableNumber;
 
     // Getters and setters
@@ -49,5 +50,21 @@ public class Reservation {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public int getNumberOfPeople() {
+        return numberOfPeople;
+    }
+
+    public void setNumberOfPeople(int numberOfPeople) {
+        this.numberOfPeople = numberOfPeople;
+    }
+
+    public int getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
     }
 }

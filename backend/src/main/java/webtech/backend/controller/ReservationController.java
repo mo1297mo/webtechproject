@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/reservations")
+@CrossOrigin("http://localhost:8081")
 public class ReservationController {
     @Autowired
     private ReservationService reservationService;

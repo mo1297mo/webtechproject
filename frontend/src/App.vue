@@ -1,17 +1,16 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Hello Wolrd!"/>
+  <div class="App">
+    <ReservationForm />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ReservationForm from './components/ReservationForm.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    ReservationForm
   }
 }
 </script>
