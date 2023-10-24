@@ -1,5 +1,6 @@
 package webtech.backend.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
@@ -13,10 +14,12 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Date date;
+    private LocalDate date;
     private String time;
     private int numberOfPeople;
-    private int tableNumber;
+    // Table need to be added
+
+    // Constructors
 
     // Getters and setters
 
@@ -36,11 +39,11 @@ public class Reservation {
         this.name = name;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -58,13 +61,5 @@ public class Reservation {
 
     public void setNumberOfPeople(int numberOfPeople) {
         this.numberOfPeople = numberOfPeople;
-    }
-
-    public int getTableNumber() {
-        return tableNumber;
-    }
-
-    public void setTableNumber(int tableNumber) {
-        this.tableNumber = tableNumber;
     }
 }
