@@ -1,4 +1,4 @@
-# Use the official OpenJDK 17 Debian-based base image
+# Use the official OpenJDK 17 Debian-based base image for the build stage
 FROM openjdk:17-jdk-slim AS build
 
 # Set the working directory in the container to /app
@@ -29,7 +29,13 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy only the built JAR from the build stage to the final image
-COPY --from=build /app/build/libs/*.jar /app/
+COPY --from=build /app/build/libs/backend-0.0.1-SNAPSHOT.jar /app/
 
+# Add the entrypoint script (assumes entrypoint.sh is in the same directory as the Dockerfile)
+COPY entrypoint.sh /app/
 
-ENTRYPOINT ["java", "-jar", "myapp.jar"]
+# Make sure the script is executable
+RUN chmod +x /app/entrypoint.sh
+
+# Use the script as the ENTRYPOINT
+ENTRYPOINT ["/app/entrypoint.sh"]
