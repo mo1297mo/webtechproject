@@ -29,6 +29,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy only the built JAR from the build stage to the final image
-COPY --from=build /app/build/libs/*.jar myapp.jar
+COPY --from=build /app/build/libs/*.jar /app/
+
 
 ENTRYPOINT ["java", "-jar", "myapp.jar"]
