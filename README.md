@@ -1,5 +1,8 @@
-Mojeeb Al-Hazmi #588473
-Ferdous Rahsepar #586693
+## Authors
+
+- [Ferdous Rahsepar](https://github.com/mo1297mo)
+- [Mojeeb Al-Hazmi](https://github.com/mojeeeb)
+
 
 # Restaurant Online Booking System
 
