@@ -42,23 +42,19 @@ To run this project locally, follow these steps:
 
 To simplify the setup and deployment of the Restaurant Online Booking System, we provide a Docker Compose configuration that includes the required services and containers. Follow these steps to run the project using Docker Compose:
 
-1. Clone the repository:
-
-`https://github.com/mo1297mo/webtechproject.git`
+1. Clone the repository:`https://github.com/mo1297mo/webtechproject.git`
 
 2. Navigate to the project directory in CLI
 
 3. Build and start the containers using Docker Compose:
 
-$ docker-compose up -d $
-
+```docker-compose up -d```
 
 4. Access the application in your browser at `http://localhost:8081`.
 
 5. To stop and remove the containers when you're done, run:
 
-$ docker-compose down -d $
-
+```docker-compose down -d```
 
 Enjoy using our Restaurant Online Booking System!
 
