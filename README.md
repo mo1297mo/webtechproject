@@ -6,7 +6,7 @@
 
 # Restaurant Online Booking System
 
-Welcome to the Restaurant Online Booking System project! This application allows users to easily reserve tables at our restaurant for specific time slots. This README provides an overview of the project, its features, and how to set it up.
+Welcome to the Restaurant Online Booking System project! This application allows users to easily reserve tables at our restaurant for specific time slots. This project was developed as part of a university course and is intended for educational purposes.
 
 ## Table of Contents
 - [Features](#features)
