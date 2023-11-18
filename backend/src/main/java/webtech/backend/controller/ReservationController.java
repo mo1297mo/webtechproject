@@ -14,7 +14,7 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
-    @GetMapping
+    @GetMapping("res")
     public List<Reservation> getAllReservations() {
         return reservationService.getAllReservations();
     }
@@ -35,7 +35,7 @@ public class ReservationController {
         return reservationService.getReservationById(id);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("res/{id}")
     public String deleteReservation(@PathVariable Long id) {
         return reservationService.deleteReservation(id);
     }
