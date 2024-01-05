@@ -1,10 +1,12 @@
 package webtech.backend;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.LocalDate;
+import java.time.*;
 import java.util.Date;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +15,7 @@ import webtech.backend.controller.ReservationController;
 import webtech.backend.services.ReservationService;
 import webtech.backend.model.Reservation;
 
+import org.hibernate.annotations.Tables;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -21,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(ReservationController.class)
@@ -41,7 +45,7 @@ public class ReservationControllerTest {
         Reservation reservation = new Reservation();
         reservation.setName("John Doe");
         reservation.setDate(LocalDate.now());
-        reservation.setTime("12:00");
+        reservation.setTime(LocalTime.of(12,0));
         reservation.setNumberOfPeople(4);
 
         when(reservationService.createReservation(reservation)).thenReturn(reservation);

@@ -1,25 +1,45 @@
 package webtech.backend.services;
 
-import webtech.backend.model.Reservation;
-import webtech.backend.repositories.ReservationRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import webtech.backend.model.*;
+import webtech.backend.repositories.*;
 
-import org.checkerframework.checker.units.qual.s;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class ReservationService {
     @Autowired
     private ReservationRepository reservationRepository;
 
+    @Autowired
+    private RestaurantTableRepository restaurantTableRepository;
+
+    @Autowired
+    private TableAvailabilityRepository tableAvailabilityRepository;
+
     public List<Reservation> getAllReservations() {
         return reservationRepository.findAll();
     }
 
-    public Reservation createReservation(Reservation reservation) {
-            return reservationRepository.save(reservation);
+    public ResponseEntity<?> createReservation(Reservation reservation) {
+        RestaurantTable suitableTable = findSuitableTable(reservation.getDate(), reservation.getTime(), reservation.getNumberOfPeople());
+        if (suitableTable != null) {
+            reservation.setRestaurantTable(suitableTable);
+            Reservation newReservation = reservationRepository.save(reservation);
+            updateTableAvailability(suitableTable, reservation.getDate(), reservation.getTime(), false);
+            return ResponseEntity.ok(newReservation);
+        } else {
+            return ResponseEntity.badRequest().body("No available tables for the selected time and number of people.");
+        }
     }
 
     public Reservation getReservationById(Long id) {
@@ -27,68 +47,67 @@ public class ReservationService {
     }
 
     public String deleteReservation(Long id) {
-        if (reservationRepository.findById(id).orElse(null) == null) {
-            return "Reservation not found";
-        }else{
+        if (reservationRepository.findById(id).isPresent()) {
             reservationRepository.deleteById(id);
             return "Reservation removed: " + id;
+        } else {
+            return "Reservation not found";
         }
     }
+
+    private RestaurantTable findSuitableTable(LocalDate date, LocalTime time, int numberOfPeople) {
+        return restaurantTableRepository.findAll().stream()
+            .filter(table -> table.getNumberOfSeats() >= numberOfPeople && isTableAvailableForTime(table, date, time))
+            .findFirst()
+            .orElse(null);
+    }
+
+    private boolean isTableAvailableForTime(RestaurantTable table, LocalDate date, LocalTime time) {
+        List<TableAvailability> availabilities = tableAvailabilityRepository.findByRestaurantTableIdAndDate(table.getId(), date);
+        return availabilities.stream()
+            .anyMatch(availability -> availability.isAvailable() && 
+                                      !time.isBefore(availability.getStartTime()) && 
+                                      !time.isAfter(availability.getEndTime()));
+    }
+
+    private void updateTableAvailability(RestaurantTable table, LocalDate date, LocalTime time, boolean isAvailable) {
+        List<TableAvailability> availabilities = tableAvailabilityRepository.findByRestaurantTableIdAndDate(table.getId(), date);
+        availabilities.stream()
+            .filter(availability -> !time.isBefore(availability.getStartTime()) && !time.isAfter(availability.getEndTime()))
+            .findFirst()
+            .ifPresent(availability -> {
+                availability.setAvailable(isAvailable);
+                tableAvailabilityRepository.save(availability);
+            });
+    }
+
 
     public Reservation updateReservation(Reservation reservation) {
-        Reservation existingReservation = reservationRepository.findById(reservation.getId()).orElse(null);
-        if(tableAvaiable(reservation) == false) {
-            System.out.println("Reservation not possible");
-            return null;
-        }
-        existingReservation.setName(reservation.getName());
-        existingReservation.setDate(reservation.getDate());
-        existingReservation.setTableNumber(reservation.getTableNumber());
-        existingReservation.setNumberOfPeople(reservation.getNumberOfPeople());
-        existingReservation.setTime(reservation.getTime());
-        System.out.println("Reservation updated");
-        return reservationRepository.save(existingReservation);
+        return reservationRepository.findById(reservation.getId())
+            .map(existingReservation -> {
+                existingReservation.setName(reservation.getName());
+                existingReservation.setDate(reservation.getDate());
+                existingReservation.setTime(reservation.getTime());
+                existingReservation.setNumberOfPeople(reservation.getNumberOfPeople());
+                existingReservation.setRestaurantTable(reservation.getRestaurantTable());
+                return reservationRepository.save(existingReservation);
+            })
+            .orElse(null);
+    }
+    
+    public List<String> getAvailableTimeSlots(LocalDate date, int numberOfPeople) {
+        LocalTime startTime = LocalTime.of(12, 0);  // Example start time
+        LocalTime endTime = LocalTime.of(21, 0);    // Example end time
+
+        return IntStream.iterate(0, i -> i + 30)
+                .limit((endTime.toSecondOfDay() - startTime.toSecondOfDay()) / 1800)
+                .mapToObj(i -> startTime.plusMinutes(i).toString())
+                .filter(time -> isTimeSlotAvailable(date, time, numberOfPeople))
+                .collect(Collectors.toList());
     }
 
-    public List<Reservation> getReservationsByTableNumber(int tableNumber) {
-        List<Reservation> reservations = reservationRepository.findAll();
-        for (Reservation reservation : reservations) {
-            if (reservation.getTableNumber() == tableNumber) {
-                reservations.add(reservation);
-            }
-        }
-        return reservations;
-    }
-
-    public List<Reservation> getReservationsByDate(String date) {
-        List<Reservation> reservations = reservationRepository.findAll();
-        for (Reservation reservation : reservations) {
-            if (reservation.getDate().equals(date)) {
-                reservations.add(reservation);
-            }
-        }
-        return reservations;
-    }
-
-    public List<Reservation> getReservationsByTime(String time) {
-        List<Reservation> reservations = reservationRepository.findAll();
-        for (Reservation reservation : reservations) {
-            if (reservation.getTime().equals(time)) {
-                reservations.add(reservation);
-            }
-        }
-        return reservations;
-    }
-
-    public boolean tableAvaiable (Reservation reservation) {
-        List<Reservation> reservations = reservationRepository.findAll();
-        for (Reservation r : reservations) {
-            if (r.getDate().equals(reservation.getDate()) 
-                && r.getTime().equals(reservation.getTime()) 
-                && r.getTableNumber() == reservation.getTableNumber()) {
-                return false;
-            }
-        }
-        return true;
+    private boolean isTimeSlotAvailable(LocalDate date, String time, int numberOfPeople) {
+        List<Reservation> existingReservations = reservationRepository.findByDateAndTime(date, LocalTime.parse(time));
+        return existingReservations.size() < numberOfPeople;
     }
 }
