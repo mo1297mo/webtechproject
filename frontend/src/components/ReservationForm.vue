@@ -85,3 +85,104 @@ export default {
 
 };
 </script>  
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap');
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+h2 {
+    color: #333;
+    text-align: center;
+}
+
+/* Form Styling */
+form {
+    background: #ffffff;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    max-width: 500px;
+    margin: 40px auto;
+    transition: all 0.3s ease-in-out;
+}
+
+form div {
+    margin-bottom: 15px;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type='text'],
+input[type='date'],
+input[type='number'] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box; /* Added for better width control */
+    transition: border-color 0.3s;
+}
+
+input[type='text']:focus,
+input[type='date']:focus,
+input[type='number']:focus {
+    border-color: #80bdff;
+    outline: none;
+}
+
+button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Time Slot Button Styles */
+.available-time-slots button {
+    .available-time-slots {
+    margin-top: 20px;
+    text-align: center;
+}
+}
+
+.available-time-slots button {
+    background: #28a745;
+    margin: 5px;
+    border-radius: 4px;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.available-time-slots button:hover {
+    background: #218838;
+}
+
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    form {
+        width: calc(100% - 30px);
+        padding: 20px;
+    }
+}
+</style>

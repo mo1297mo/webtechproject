@@ -15,7 +15,6 @@ import webtech.backend.controller.ReservationController;
 import webtech.backend.services.ReservationService;
 import webtech.backend.model.Reservation;
 
-import org.hibernate.annotations.Tables;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
