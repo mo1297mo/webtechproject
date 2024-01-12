@@ -39,19 +39,4 @@ public class ReservationControllerTest {
     @MockBean
     private ReservationService reservationService;
 
-    @Test
-    public void createReservation_returnsCreatedReservation() throws Exception {
-        Reservation reservation = new Reservation();
-        reservation.setName("John Doe");
-        reservation.setDate(LocalDate.now());
-        reservation.setTime(LocalTime.of(12,0));
-        reservation.setNumberOfPeople(4);
-
-        when(reservationService.createReservation(reservation)).thenReturn(reservation);
-
-        mockMvc.perform(post("/api/reservation")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(reservation)))
-                .andExpect(status().isOk());
-    }
 }

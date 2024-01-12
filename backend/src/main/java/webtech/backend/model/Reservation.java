@@ -23,6 +23,15 @@ public class Reservation {
     private LocalDate date;
     private LocalTime time;
     private Integer numberOfPeople;
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @ManyToOne
     @JoinColumn(name = "restaurantTable_id", nullable = false)
