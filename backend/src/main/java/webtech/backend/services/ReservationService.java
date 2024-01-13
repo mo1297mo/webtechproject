@@ -26,6 +26,8 @@ public class ReservationService {
     @Autowired
     private TableAvailabilityRepository tableAvailabilityRepository;
 
+    private EmailService emailService;
+
     public List<Reservation> getAllReservations() {
         return reservationRepository.findAll();
     }
@@ -36,10 +38,28 @@ public class ReservationService {
             reservation.setRestaurantTable(suitableTable);
             Reservation newReservation = reservationRepository.save(reservation);
             updateTableAvailability(suitableTable, reservation.getDate(), reservation.getTime(), false);
+            sendconfirmationEmail(reservation);
             return ResponseEntity.ok(newReservation);
         } else {
             return ResponseEntity.badRequest().body("No available tables for the selected time and number of people.");
         }
+    }
+
+    private void sendconfirmationEmail(Reservation newReservation) {
+        String subject = "Reservation Confirmation";
+        String htmlContent = "<h1>Reservation Confirmation</h1>" +
+                "<p>Dear " + newReservation.getName() + ",</p>" +
+                "<p>Thank you for your reservation.</p>" +
+                "<p>Reservation details:</p>" +
+                "<ul>" +
+                "<li>Date: " + newReservation.getDate() + "</li>" +
+                "<li>Time: " + newReservation.getTime() + "</li>" +
+                "<li>Number of people: " + newReservation.getNumberOfPeople() + "</li>" +
+                "<li>Table: " + newReservation.getRestaurantTable().getId() + "</li>" +
+                "</ul>" +
+                "<p>Kind regards,</p>" +
+                "<p>Your Restaurant</p>";
+        emailService.sendEmail(newReservation.getEmail(), subject, htmlContent);
     }
 
     public Reservation getReservationById(Long id) {
