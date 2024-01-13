@@ -8,7 +8,6 @@ import webtech.backend.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -25,8 +24,7 @@ public class ReservationService {
 
     @Autowired
     private TableAvailabilityRepository tableAvailabilityRepository;
-    @
-    Autowired
+    @Autowired
     private EmailService emailService;
 
     public List<Reservation> getAllReservations() {
@@ -34,8 +32,10 @@ public class ReservationService {
     }
 
     public ResponseEntity<?> createReservation(Reservation reservation) {
-        RestaurantTable suitableTable = findSuitableTable(reservation.getDate(), reservation.getTime(), reservation.getNumberOfPeople());
+        RestaurantTable suitableTable = findSuitableTable(reservation.getDate(), reservation.getTime(),
+                reservation.getNumberOfPeople());
         if (suitableTable != null) {
+            reservation.generateUniqueID();
             reservation.setRestaurantTable(suitableTable);
             Reservation newReservation = reservationRepository.save(reservation);
             updateTableAvailability(suitableTable, reservation.getDate(), reservation.getTime(), false);
@@ -78,48 +78,51 @@ public class ReservationService {
 
     private RestaurantTable findSuitableTable(LocalDate date, LocalTime time, int numberOfPeople) {
         return restaurantTableRepository.findAll().stream()
-            .filter(table -> table.getNumberOfSeats() >= numberOfPeople && isTableAvailableForTime(table, date, time))
-            .findFirst()
-            .orElse(null);
+                .filter(table -> table.getNumberOfSeats() >= numberOfPeople
+                        && isTableAvailableForTime(table, date, time))
+                .findFirst()
+                .orElse(null);
     }
 
     private boolean isTableAvailableForTime(RestaurantTable table, LocalDate date, LocalTime time) {
-        List<TableAvailability> availabilities = tableAvailabilityRepository.findByRestaurantTableIdAndDate(table.getId(), date);
+        List<TableAvailability> availabilities = tableAvailabilityRepository
+                .findByRestaurantTableIdAndDate(table.getId(), date);
         return availabilities.stream()
-            .anyMatch(availability -> availability.isAvailable() && 
-                                      !time.isBefore(availability.getStartTime()) && 
-                                      !time.isAfter(availability.getEndTime()));
+                .anyMatch(availability -> availability.isAvailable() &&
+                        !time.isBefore(availability.getStartTime()) &&
+                        !time.isAfter(availability.getEndTime()));
     }
 
     private void updateTableAvailability(RestaurantTable table, LocalDate date, LocalTime time, boolean isAvailable) {
-        List<TableAvailability> availabilities = tableAvailabilityRepository.findByRestaurantTableIdAndDate(table.getId(), date);
+        List<TableAvailability> availabilities = tableAvailabilityRepository
+                .findByRestaurantTableIdAndDate(table.getId(), date);
         availabilities.stream()
-            .filter(availability -> !time.isBefore(availability.getStartTime()) && !time.isAfter(availability.getEndTime()))
-            .findFirst()
-            .ifPresent(availability -> {
-                availability.setAvailable(isAvailable);
-                tableAvailabilityRepository.save(availability);
-            });
+                .filter(availability -> !time.isBefore(availability.getStartTime())
+                        && !time.isAfter(availability.getEndTime()))
+                .findFirst()
+                .ifPresent(availability -> {
+                    availability.setAvailable(isAvailable);
+                    tableAvailabilityRepository.save(availability);
+                });
     }
-
 
     public Reservation updateReservation(Reservation reservation) {
         return reservationRepository.findById(reservation.getId())
-            .map(existingReservation -> {
-                existingReservation.setName(reservation.getName());
-                existingReservation.setDate(reservation.getDate());
-                existingReservation.setTime(reservation.getTime());
-                existingReservation.setNumberOfPeople(reservation.getNumberOfPeople());
-                existingReservation.setRestaurantTable(reservation.getRestaurantTable());
-                existingReservation.setEmail(reservation.getEmail());
-                return reservationRepository.save(existingReservation);
-            })
-            .orElse(null);
+                .map(existingReservation -> {
+                    existingReservation.setName(reservation.getName());
+                    existingReservation.setDate(reservation.getDate());
+                    existingReservation.setTime(reservation.getTime());
+                    existingReservation.setNumberOfPeople(reservation.getNumberOfPeople());
+                    existingReservation.setRestaurantTable(reservation.getRestaurantTable());
+                    existingReservation.setEmail(reservation.getEmail());
+                    return reservationRepository.save(existingReservation);
+                })
+                .orElse(null);
     }
-    
+
     public List<String> getAvailableTimeSlots(LocalDate date, int numberOfPeople) {
-        LocalTime startTime = LocalTime.of(12, 0);  // Example start time
-        LocalTime endTime = LocalTime.of(21, 0);    // Example end time
+        LocalTime startTime = LocalTime.of(12, 0); // Example start time
+        LocalTime endTime = LocalTime.of(21, 0); // Example end time
 
         return IntStream.iterate(0, i -> i + 30)
                 .limit((endTime.toSecondOfDay() - startTime.toSecondOfDay()) / 1800)

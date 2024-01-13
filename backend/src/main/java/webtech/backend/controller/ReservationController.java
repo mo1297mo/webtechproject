@@ -39,9 +39,14 @@ public class ReservationController {
         return reservationService.createReservation(reservation);
     }
 
-    @GetMapping("res/{id}")
-    public Reservation getReservationById(@PathVariable Long id) {
-        return reservationService.getReservationById(id);
+    @GetMapping("/res/{id}")
+    public ResponseEntity<Reservation> getReservationById(@PathVariable Long id) {
+        Reservation reservation = reservationService.getReservationById(id);
+        if (reservation != null) {
+            return new ResponseEntity<>(reservation, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/res/{id}")

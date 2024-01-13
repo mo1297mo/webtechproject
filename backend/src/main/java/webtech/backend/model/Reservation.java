@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalTime;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalTimeConverter;
 
@@ -16,7 +17,6 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalTi
 public class Reservation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -100,5 +100,11 @@ public class Reservation {
 
     public void setNumberOfPeople(int numberOfPeople) {
         this.numberOfPeople = numberOfPeople;
+    }
+
+    // Method to generate a unique 8-digit ID
+    public void generateUniqueID() {
+        // Generate a random number between 10000000 (inclusive) and 100000000 (exclusive)
+        this.id = ThreadLocalRandom.current().nextLong(10000000L, 100000000L);
     }
 }
