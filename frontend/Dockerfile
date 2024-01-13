@@ -26,7 +26,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy the build app to nginx
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
-# Expose port 81
-EXPOSE 81
+# Expose port 8081
+EXPOSE 8081
 
 CMD ["nginx", "-g", "daemon off;"]
