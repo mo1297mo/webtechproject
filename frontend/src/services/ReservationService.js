@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const RESERVATION_API_URL = "http://localhost:8080/api/reservation";
+const RESERVATION_API_URL = process.env.VUE_APP_API_BASE_URL;
 
 class ReservationService {
   createReservation(reservation) {
