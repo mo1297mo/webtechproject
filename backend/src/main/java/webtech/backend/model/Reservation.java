@@ -40,11 +40,12 @@ public class Reservation {
     // Constructors
     public Reservation() {}
 
-    public Reservation(String name, LocalDate date, LocalTime time, int numberOfPeople) {
+    public Reservation(String name, LocalDate date, LocalTime time, int numberOfPeople, String email) {
         this.name = name;
         this.date = date;
         this.time = time;
         this.numberOfPeople = numberOfPeople;
+        this.email = email;
     }
 
     // Getters and setters

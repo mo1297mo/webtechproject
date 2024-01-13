@@ -110,6 +110,7 @@ public class ReservationService {
                 existingReservation.setTime(reservation.getTime());
                 existingReservation.setNumberOfPeople(reservation.getNumberOfPeople());
                 existingReservation.setRestaurantTable(reservation.getRestaurantTable());
+                existingReservation.setEmail(reservation.getEmail());
                 return reservationRepository.save(existingReservation);
             })
             .orElse(null);
