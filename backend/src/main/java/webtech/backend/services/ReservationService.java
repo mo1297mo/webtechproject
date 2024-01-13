@@ -25,7 +25,8 @@ public class ReservationService {
 
     @Autowired
     private TableAvailabilityRepository tableAvailabilityRepository;
-
+    @
+    Autowired
     private EmailService emailService;
 
     public List<Reservation> getAllReservations() {

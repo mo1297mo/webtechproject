@@ -10,7 +10,8 @@
                 <label for="date">Date:</label>
                 <input type="date" id="date" v-model="newReservation.date" required @change="fetchAvailableTimeSlots" />
             </div>
-            <input v-model="reservation.email" type="email" placeholder="Enter your email" />
+                <label for="email">E-mail:</label>
+                <input type="text" id="email" v-model="newReservation.email" required @change="fetchAvailableTimeSlots" />
             <div>
                 <label for="numberOfPeople">Number of People:</label>
                 <input type="number" id="numberOfPeople" v-model="newReservation.numberOfPeople" required @change="fetchAvailableTimeSlots" />
