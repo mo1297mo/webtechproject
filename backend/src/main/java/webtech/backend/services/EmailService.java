@@ -6,6 +6,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
@@ -22,10 +23,15 @@ public class EmailService {
      * @param htmlContent
      */
     public void sendEmail(String to, String subject, String htmlContent) {
+        Dotenv dotenv = Dotenv.load();
+        String senderEmail = dotenv.get("MAIL_USERNAME");
+        if (senderEmail == null) {
+            throw new IllegalStateException("sender email is not set in .env");
+        }
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom("Sender Email");
+            helper.setFrom(senderEmail);
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(htmlContent, true);
