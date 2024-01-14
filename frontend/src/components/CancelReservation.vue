@@ -24,7 +24,8 @@
       </ul>
     </div>
 
-
+    <!-- Reservation Form -->
+      <h2></h2>
       <h2>Cancel Reservation</h2>
       <form @submit.prevent="cancelReservation" class="cancel-form">
           <div class="form-group">
