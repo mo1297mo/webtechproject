@@ -47,25 +47,29 @@ export default {
     },
     methods: {
         createReservation() {
-            event.preventDefault();
-            ReservationService.createReservation(this.newReservation)
-                .then(response => {
-                    console.log('Reservation created:', response.data);
+    event.preventDefault();
+    ReservationService.createReservation(this.newReservation)
+        .then(response => {
+            console.log('Reservation created:', response.data);
 
-                    this.$router.push({
-                        name: 'confirmation',
-                        params: {
-                            name: this.newReservation.name,
-                            date: this.newReservation.date,
-                            time: this.newReservation.time
-                        }
-                    });
-
-                })
-                .catch(error => {
-                    console.error('Error creating reservation: ' + error);
+            // Redirect to the confirmation page
+            if (this.$route.path !== '/confirmation') {
+                this.$router.push({
+                    name: 'confirmation',
+                    params: {
+                        name: this.newReservation.name,
+                        date: this.newReservation.date,
+                        time: this.newReservation.time
+                    }
                 });
-        },
+            }
+
+        })
+        .catch(error => {
+            console.error('Error creating reservation: ' + error);
+        });
+},
+
         fetchAvailableTimeSlots() {
             if (this.newReservation.date && this.newReservation.numberOfPeople) {
                 ReservationService.getAvailableTimeSlots(this.newReservation.date, this.newReservation.numberOfPeople)
