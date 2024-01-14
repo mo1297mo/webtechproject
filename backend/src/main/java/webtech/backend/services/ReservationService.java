@@ -31,7 +31,7 @@ public class ReservationService {
         return reservationRepository.findAll();
     }
 
-    public ResponseEntity<?> createReservation(Reservation reservation) {
+    public Reservation createReservation(Reservation reservation) {
         RestaurantTable suitableTable = findSuitableTable(reservation.getDate(), reservation.getTime(),
                 reservation.getNumberOfPeople());
         if (suitableTable != null) {
@@ -40,9 +40,10 @@ public class ReservationService {
             Reservation newReservation = reservationRepository.save(reservation);
             updateTableAvailability(suitableTable, reservation.getDate(), reservation.getTime(), false);
             sendconfirmationEmail(reservation);
-            return ResponseEntity.ok(newReservation);
+            return newReservation;
         } else {
-            return ResponseEntity.badRequest().body("No available tables for the selected time and number of people.");
+            System.out.println("No available tables for the selected time and number of people.");
+            return null;
         }
     }
 

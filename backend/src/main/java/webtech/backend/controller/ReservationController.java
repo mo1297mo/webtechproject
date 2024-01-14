@@ -36,7 +36,8 @@ public class ReservationController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createReservation(@RequestBody Reservation reservation) {
-        return reservationService.createReservation(reservation);
+        reservationService.createReservation(reservation);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/res/{id}")
