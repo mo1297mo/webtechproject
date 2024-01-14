@@ -68,7 +68,6 @@ public class ReservationControllerTest {
     @MockBean
     private DatabaseSeeder databaseSeeder;
 
-
     @Test
     public void createReservation_returnsCreatedReservation() throws Exception {
         Reservation reservation = new Reservation();
@@ -85,7 +84,6 @@ public class ReservationControllerTest {
                 .content(objectMapper.writeValueAsString(reservation)))
                 .andExpect(status().isOk());
     }
-
 
     @Test
     public void updateReservation_ReservationExists_UpdatesAndReturnsReservation() throws Exception {
@@ -115,5 +113,28 @@ public class ReservationControllerTest {
                 .andExpect(content().string("Reservation removed: 1"));
     }
 
-    
+    @Test
+    public void getAllReservations_ReturnsListOfReservations() throws Exception {
+        List<Reservation> reservations = Arrays.asList(
+                new Reservation("Alice", LocalDate.now(), LocalTime.of(18, 0), 2, "alice@example.com"),
+                new Reservation("Bob", LocalDate.now().plusDays(1), LocalTime.of(19, 0), 3, "bob@example.com"));
+
+        when(reservationService.getAllReservations()).thenReturn(reservations);
+
+        mockMvc.perform(get("/api/reservation/res"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].name", is("Alice")))
+                .andExpect(jsonPath("$[1].name", is("Bob")));
+    }
+
+    @Test
+    public void getReservationById_NotFound_ReturnsNotFoundStatus() throws Exception {
+        Long reservationId = 123L;
+        when(reservationService.getReservationById(reservationId)).thenReturn(null);
+
+        mockMvc.perform(get("/api/reservation/res/" + reservationId))
+                .andExpect(status().isNotFound());
+    }
+
 }
