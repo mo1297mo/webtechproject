@@ -1,18 +1,13 @@
 <template>
-  <div class="App">
-    <ReservationForm />
+  <div id="app">
+    <!-- Removed the ReservationForm to only use router-view for routing -->
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import ReservationForm from './components/ReservationForm.vue';
-
 export default {
-  name: 'App',
-  components: {
-    ReservationForm
-  }
+  name: 'App'
 }
 </script>
 
