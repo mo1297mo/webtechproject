@@ -38,7 +38,8 @@ public class Reservation {
     private RestaurantTable restaurantTable;
 
     // Constructors
-    public Reservation() {}
+    public Reservation() {
+    }
 
     public Reservation(String name, LocalDate date, LocalTime time, int numberOfPeople, String email) {
         this.name = name;
@@ -102,9 +103,10 @@ public class Reservation {
         this.numberOfPeople = numberOfPeople;
     }
 
-    // Method to generate a unique 8-digit ID
+    // Method to generate a unique 8-digit ID for the reservation
     public void generateUniqueID() {
-        // Generate a random number between 10000000 (inclusive) and 100000000 (exclusive)
+        // Generate a random number between 10000000 (inclusive) and 100000000
+        // (exclusive)
         this.id = ThreadLocalRandom.current().nextLong(10000000L, 100000000L);
     }
 }
