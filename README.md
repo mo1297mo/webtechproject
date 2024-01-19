@@ -40,6 +40,7 @@ This project is built using the following technologies:
 - Vue.js for the frontend
 - Axios for API requests
 - Gradle for build management
+- Gmail API
 
 ## Getting Started
 
