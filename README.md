@@ -3,12 +3,12 @@
 - [Ferdous Rahsepar](https://github.com/mo1297mo)
 - [Mojeeb Al-Hazmi](https://github.com/mojeeeb)
 
-
 # Restaurant Online Booking System
 
 Welcome to the Restaurant Online Booking System project! This application allows users to easily reserve tables at our restaurant for specific time slots. This project was developed as part of a university course and is intended for educational purposes.
 
 ## Table of Contents
+
 - [Features](#features)
 - [Technologies](#technologies)
 - [Getting Started](#getting-started)
@@ -24,6 +24,10 @@ Our Restaurant Online Booking System comes with the following features:
 - Reservation Management: Users can view, edit, and cancel their reservations.
 - Availability Checking: The system checks table availability to prevent overbooking.
 - Database Integration: Data is stored in a PostgreSQL database.
+
+## Deployment URL
+
+URL: https://seal-app-wwvjg.ondigitalocean.app/
 
 ## Technologies
 
@@ -50,18 +54,20 @@ To simplify the setup and deployment of the Restaurant Online Booking System, we
 2. Navigate to the project directory in CLI
 
 3. Build and start the containers using Docker Compose:
+
 ```
 docker-compose up -d
 ```
+
 4. Access the application in your browser at `http://localhost:8081`.
 
 5. To stop and remove the containers when you're done, run:
+
 ```
 docker-compose down -d
 ```
+
 Enjoy using our Restaurant Online Booking System!
-
-
 
 ## Usage
 
@@ -80,4 +86,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 Feel free to customize this README to better match your project's specifics. Add sections or details that are relevant to your development process, deployment, and usage instructions.
-
